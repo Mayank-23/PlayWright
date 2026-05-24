@@ -13,6 +13,8 @@ test('Login and Get Title of the first element', async ({browser})=>{
     await password.fill("Learning@830$3mK2");
     await signIn.click();
     //console.log(await cardTitles.last().textContent());
+    await page.waitForLoadState('networkidle');
+    console.log(await page.locator(".card-body h5").allTextContents());
     await expect(await cardTitles.first()).toContainText('ADIDAS ORIGINAL');
     await expect(await cardTitles.last()).toContainText('iphone 13 pro');
 
