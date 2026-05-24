@@ -32,4 +32,21 @@ test('Page Context Playwright Test', async ({page})=>{
     await page.goto("https://google.com");
     //console.log(await page.title());
     await expect(page).toHaveTitle("Google");
+}),
+
+test.only('UI Controls', async({page})=>{
+    const userName = page.locator('input#username');
+    const password = page.locator("[type='password']");
+    const dropDown = page.locator('select.form-control');
+    const radio = page.locator('.radiotextsty');
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    await userName.fill("Mayank");
+    await password.fill("learning");
+    await dropDown.selectOption("consult");
+    //await page.pause();
+    await radio.nth(1).click();
+    //await page.pause();
+    await page.locator('#okayBtn').click();
+    await page.pause();
+
 })
