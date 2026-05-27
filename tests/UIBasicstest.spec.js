@@ -34,11 +34,12 @@ test('Page Context Playwright Test', async ({page})=>{
     await expect(page).toHaveTitle("Google");
 }),
 
-test.only('UI Controls', async({page})=>{
+test('UI Controls', async({page})=>{
     const userName = page.locator('input#username');
     const password = page.locator("[type='password']");
     const dropDown = page.locator('select.form-control');
     const radio = page.locator('.radiotextsty');
+    const docsLink = page.locator("[href='https://rahulshettyacademy.com/documents-request']");
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
     await userName.fill("Mayank");
     await password.fill("learning");
@@ -47,6 +48,39 @@ test.only('UI Controls', async({page})=>{
     await radio.nth(1).click();
     //await page.pause();
     await page.locator('#okayBtn').click();
-    await page.pause();
+    await expect(radio.nth(1)).toBeChecked(); // one way of adding this assertion
+    console.log(await radio.nth(1).isChecked());// not an assertion but will check and return true or false if the radio button is checked or unchecked.
+    //await page.pause();
+    await page.locator("#terms").click();
+    await expect(page.locator("#terms")).toBeChecked();
+    await page.locator("#terms").uncheck();// will uncheck the selected checkbox.
+    expect(await page.locator("#terms").isChecked()).toBeFalsy(); //will return true if the checkbox is unchecked
+    //await page.pause();
+    await expect(docsMatch).toHaveAttribute("class", "blinkingText");
+}),
+
+test.only('Child window handling', async ({browser})=>{
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const userName = page.locator('input#username');
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    const docsLink = page.locator("[href='https://rahulshettyacademy.com/documents-request']");
+   const [newPage] = await Promise.all([
+
+    context.waitForEvent('page'), //catching the second page has to be given before the new page is getting opened
+    docsLink.click(),
+])
+
+ const text = await newPage.locator("[class = 'im-para red']").textContent();
+ const arrayText = text.split("@");
+ const domain = arrayText[1].split(" ")[0];
+ //console.log(domain);
+ await userName.fill(domain);
+ await page.pause();
+ console.log(await userName.inputValue());
+ await expect(userName).toHaveValue(domain);
+await page.pause();
+    
+
 
 })
