@@ -37,6 +37,21 @@ test('E2E Journey of eCommerce', async ({browser})=>{
    await page.locator("div li").first().waitFor();
    const bool = await page.locator("h3:has-text('ZARA COAT 3')").isVisible();
    expect(bool).toBeTruthy();
+   
+   await page.locator("text = Checkout").click();
+   await expect(await page.locator(".item__title")).toContainText(productName);
+   await page.locator("[class*='input txt text-validated']").first().fill("9125603620")
+  // await page.locator("select").selectOption("05");
+   await page.locator("[class = 'input txt']").first().fill("999");
+   await page.locator("[class = 'input txt']").last().fill("Shaun Parker");
+   await page.locator("[name= 'coupon']").fill("rahulshettyacademy");
+   await page.locator("[type= 'submit']").click();
+   const couponApplied = await page.locator("p:has-text('* Coupon Applied')");
+   await expect(couponApplied).toContainText('* Coupon Applied');
    await page.pause();
+
+
+
+
 
 })
