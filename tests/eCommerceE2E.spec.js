@@ -66,9 +66,9 @@ test('E2E Journey of eCommerce', async ({browser})=>{
    const confirm = page.locator(".hero-primary");
    await expect(confirm).toBeVisible();
    let orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
-   orderID = orderID.replace(/^\|\s*|\s*\|$/g, "");
+   orderID = orderID.replaceAll('|','');
    console.log(orderID);
-   await page.pause();
+  // await page.pause();
 
 
 
