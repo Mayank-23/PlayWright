@@ -48,6 +48,18 @@ test('E2E Journey of eCommerce', async ({browser})=>{
    await page.locator("[type= 'submit']").click();
    const couponApplied = await page.locator("p:has-text('* Coupon Applied')");
    await expect(couponApplied).toContainText('* Coupon Applied');
+   await page.locator("[placeholder= 'Select Country']").pressSequentially("ind");
+   const dropDown = await page.locator(".ta-results");
+   await dropDown.waitFor();
+   const optionsCount = await dropDown.locator("button").count();
+   for(let i=0;i<optionsCount;i++){
+    let text = await dropDown.locator("button").nth(i).textContent();
+    if(text.trim() === "India"){
+        await dropDown.locator("button").nth(i).click();
+        break;
+    }
+
+   }
    await page.pause();
 
 
