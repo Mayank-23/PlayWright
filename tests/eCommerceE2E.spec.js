@@ -2,6 +2,7 @@ const {test,expect} = require("@playwright/test");
 
 
 test('E2E Journey of eCommerce', async ({browser})=>{
+    const email = "assignment@user.com";
     const context = await browser.newContext();
     const page = await context.newPage();
     const userEmail = page.locator('#userEmail');
@@ -11,7 +12,7 @@ test('E2E Journey of eCommerce', async ({browser})=>{
     const products = page.locator(".card-body");
     const productName = 'ZARA COAT 3';
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
-    await userEmail.fill("assignment@user.com");
+    await userEmail.fill(email);
     await password.fill("Learning@830$3mK2");
     await signIn.click();
     //console.log(await cardTitles.last().textContent());
@@ -60,6 +61,13 @@ test('E2E Journey of eCommerce', async ({browser})=>{
     }
 
    }
+   await expect(page.locator(".user__name [type = 'text']").first()).toHaveText(email);
+   await page.locator("[class*='action__submit']").click();
+   const confirm = page.locator(".hero-primary");
+   await expect(confirm).toBeVisible();
+   let orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+   orderID = orderID.replace(/^\|\s*|\s*\|$/g, "");
+   console.log(orderID);
    await page.pause();
 
 
