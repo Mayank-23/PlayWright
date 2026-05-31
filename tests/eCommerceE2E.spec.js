@@ -68,8 +68,19 @@ test('E2E Journey of eCommerce', async ({browser})=>{
    let orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
    orderID = orderID.replaceAll('|','');
    console.log(orderID);
-  // await page.pause();
-
+   await page.locator("ul [routerlink*='myorders']").click();
+   await page.pause();
+   const items = await page.locator(".py-5 [scope = 'row']");
+   const buttons = await page.locator(".py-5 td .btn-primary");
+   await items.first().waitFor();
+   const itemCount = items.count();
+   for(let i=0;i<itemCount;i++){
+    if(await items.nth(i).textContent()===orderID){
+        await buttons.nth(i).click();
+        break;
+    }
+   }
+   await page.pause();
 
 
 
