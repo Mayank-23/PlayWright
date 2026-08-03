@@ -56,10 +56,10 @@ test('UI Controls', async({page})=>{
     await page.locator("#terms").uncheck();// will uncheck the selected checkbox.
     expect(await page.locator("#terms").isChecked()).toBeFalsy(); //will return true if the checkbox is unchecked
     //await page.pause();
-    await expect(docsMatch).toHaveAttribute("class", "blinkingText");
+    await expect(docsLink).toHaveAttribute("class", "blinkingText");
 }),
 
-test.only('Child window handling', async ({browser})=>{
+test('Child window handling', async ({browser})=>{
     const context = await browser.newContext();
     const page = await context.newPage();
     const userName = page.locator('input#username');
