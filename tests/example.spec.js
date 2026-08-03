@@ -12,4 +12,21 @@ test('Example test', async ({browser})=>{
     await expect(head).toHaveText("Example Domain");
 
 
-})  
+}),
+
+test('Example test 2', async ({page})=>{
+
+    await page.goto("https://the-internet.herokuapp.com/login");
+    const heading = await page.locator("h2");
+    const userEmail = page.locator('#username');
+    const password = page.locator('#password'); 
+    const success = page.locator("#flash");
+    await expect(heading).toHaveText("Login Page");
+    await userEmail.fill("tomsmith");
+    await password.fill("SuperSecretPassword!");
+    await page.locator('.radius').click();
+    await expect(success).toContainText("You logged into a secure area!");
+  
+
+
+})
