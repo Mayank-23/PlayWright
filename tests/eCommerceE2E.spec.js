@@ -66,7 +66,7 @@ test('E2E Journey of eCommerce', async ({browser})=>{
    const confirm = page.locator(".hero-primary");
    await expect(confirm).toBeVisible();
    let orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
-   orderID = orderID.replaceAll('|','').trim();
+   orderID = orderID.replaceAll('|','').trim(); //instead of trimming we can also use orderID.includes()
    console.log(orderID);
    await page.locator("ul [routerlink*='myorders']").click();
    const items = await page.locator(".py-5 [scope = 'row']");
@@ -74,13 +74,14 @@ test('E2E Journey of eCommerce', async ({browser})=>{
    await items.first().waitFor();
    const itemCount = await items.count();
    for(let i=0;i<itemCount;i++){
-    let orderID_match = (await items.nth(i).textContent())?.trim();
+    let orderID_match = (await items.nth(i).textContent());
     if(orderID_match===orderID){
         await buttons.nth(i).click();
         break;
     }
    }
-   await page.pause();
+   const orderIDdetails = await page.locator(".col-text").textContent();
+   await expect(orderID.includes(orderIDdetails)).toBeTruthy();
 
 
 
