@@ -12,5 +12,7 @@ test('Playwright Specific Locators', async ({page}) =>{
    const visible = await page.getByText("Success! The Form has been submitted successfully!.").isVisible();
    await expect(visible).toBeTruthy();
    await page.getByRole("link", {name: 'Shop'}).click();
+   await page.locator("app-card").filter({hasText: 'Nokia Edge'}).getByRole("button").click() //only one button on that particular element so no need to give second argument
+   
 
 })
