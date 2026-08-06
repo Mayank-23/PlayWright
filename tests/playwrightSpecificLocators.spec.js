@@ -9,8 +9,13 @@ test('Playwright Specific Locators', async ({page}) =>{
    // await page.pause();
    await page.getByPlaceholder("Password").fill('Password@123');
    await page.getByRole("button", {name: 'Submit'}).click();
+   //assertion is applied seperately on the variable as the result was stored in it
    const visible = await page.getByText("Success! The Form has been submitted successfully!.").isVisible();
    await expect(visible).toBeTruthy();
+   //assertion can be directly applied on the get by text as it is checking the text.
+   //default timeout when locator is directly wrapped for assertion is 5 secs can be increased by giving .toBeVisible({timeout: 10_000})
+   await expect(page.getByText("Success! The Form has been submitted successfully!.")).toBeVisible();
+   
    await page.getByRole("link", {name: 'Shop'}).click();
    await page.locator("app-card").filter({hasText: 'Nokia Edge'}).getByRole("button").click() //only one button on that particular element so no need to give second argument
    
