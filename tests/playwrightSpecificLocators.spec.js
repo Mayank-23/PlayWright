@@ -24,8 +24,12 @@ test('Playwright Specific Locators', async ({page}) =>{
 
 test.only('test specific timeout', async ({page}) =>{
 
+    //whole test specific timeout in config file the default time for finishing each test in 30 secs here we have increased for this specific test to 60 secs
+    test.timeout(60000);
     //this can be used when a specific flow is taking more time then the default timeout where ever more time is required we can give slowExpect instead of expect
     const slowExpect = expect.configure({timeout:9000});
+    //test level action timeout
+    page.setDefaultTimeout(9000);
     await page.goto("https://rahulshettyacademy.com/angularpractice/");
     await page.getByLabel("Check me out if you Love IceCreams!").click();
     await page.getByLabel("Employed").click(); //.check() can also be used it specfically clicks the radio button or checkboxes
