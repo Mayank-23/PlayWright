@@ -20,7 +20,16 @@ test('Login to application', async({browser})=>{
     const page = await context.newPage();
     await login(page);
     await expect(page.getByText("Browse Events →")).toBeVisible();
-    await page.pause();
+    //await page.pause();
+    
+    //Step 2
+    await page.getByRole('button',{name:'Admin'}).click();
+    await page.locator("[ href = '/admin/events' ]").first().click();
+    const event = `Test Event ${Date.now()}`;  //Javascript function to get the timestamp in miliseconds and appending it with Test event to create event name
+    console.log(event);
+    await page.locator('#event-title-input').fill(event);
+    await page.getByPlaceholder('Describe the event…').fill("Test text entered into the event description");
+    //await page.pause();
 
 
 })
