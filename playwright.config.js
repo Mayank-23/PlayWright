@@ -13,12 +13,16 @@ export default defineConfig({
   expect:{
     timeout: 5000, //timeout for  all assertions
   },
+
+  reporter: 'html', //for generating report with screenshots and logs
   use: {
     
     browserName: 'chromium',
     headless : true,
     actionTimeout: 10 * 1000, //this line is written for global action timeout
-    navigationTimeout: 30 * 1000 //this line is written for navigation timeout like when page.goto is used to navigate to any page
+    navigationTimeout: 30 * 1000, //this line is written for navigation timeout like when page.goto is used to navigate to any page
+    screenshot: 'on', //takes screenshot at each step
+    trace: 'on' //take the logs at each step
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
   

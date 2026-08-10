@@ -22,7 +22,7 @@ test('Playwright Specific Locators', async ({page}) =>{
 
 }),
 
-test.only('test specific timeout', async ({page}) =>{
+test('test specific timeout', async ({page}) =>{
 
     //whole test specific timeout in config file the default time for finishing each test in 30 secs here we have increased for this specific test to 60 secs
     //test.timeout(60000);
