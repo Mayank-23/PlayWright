@@ -43,11 +43,11 @@ test('Login to application', async({browser})=>{
     await page.getByLabel('Price ($)').fill("1000");
     await page.getByLabel('Total Seats').fill("50");
     await page.locator('#add-event-btn').click();
-    await expect(page.getByText('✓Event created!×')).toBeVisible();
+    await expect(page.getByText('Event created!')).toBeVisible();
     
     await page.locator('#nav-events').click();
     
-    await page.locator('[data-testid="event-card"]').first().isVisible();
+    await expect(page.locator('[data-testid="event-card"]').first()).toBeVisible();
     const eventCards = page.locator('[data-testid="event-card"]');
     const match = eventCards.filter({hasText: event});
     await expect(match).toBeVisible();
