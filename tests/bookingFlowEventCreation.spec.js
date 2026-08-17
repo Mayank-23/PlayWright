@@ -53,6 +53,15 @@ test('Login to application', async({browser})=>{
     await expect(match).toBeVisible();
     //await page.pause();
     //need to start from last step before step 4
+    const seatsText = await page.locator("[data-testid='event-card'] span").last().textContent();
+    //console.log(seatsBeforeBooking);
+    /*const seatsElement = await eventCard.getByText(/seats/i);
+    const seats = await seatsElement.textContent();
+    console.log(seats);
+*/
+    const seatsBeforeBooking =parseInt(seatsText.match(/\d+/)[0]);
+    console.log(seatsBeforeBooking);
+
 
     
 
