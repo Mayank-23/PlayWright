@@ -62,6 +62,18 @@ test('Login to application', async({browser})=>{
     const seatsBeforeBooking =parseInt(seatsText.match(/\d+/)[0]);
     console.log(seatsBeforeBooking);
 
+    // Step 4
+    const bookBtn = eventCards.last().locator('[data-testid="book-now-btn"]');
+    await bookBtn.click();
+    //Step 5
+    const ticketCount = page.locator('#ticket-count:has-text("1")').isVisible();
+    await page.getByLabel('Full Name').fill('Test User');
+    await page.locator('#customer-email').fill('testUser@test.com');
+    await page.getByPlaceholder('+91 98765 43210').fill('9192931918');
+    await page.locator('.confirm-booking-btn').click();
+    await page.pause();
+
+
 
     
 
