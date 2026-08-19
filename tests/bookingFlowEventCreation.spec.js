@@ -72,6 +72,11 @@ test('Login to application', async({browser})=>{
     await page.getByPlaceholder('+91 98765 43210').fill('9192931918');
     await page.locator('.confirm-booking-btn').click();
     await page.pause();
+    
+    const bookRef = await page.locator('.booking-ref').innerText();
+    //expect(bookRef).toBeVisible();
+    console.log(bookRef);
+    
 
 
 
