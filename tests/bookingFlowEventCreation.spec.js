@@ -22,7 +22,7 @@ async function futureDatevalue() {
 }
 
 //Step 1
-test('Login to application', async({browser})=>{
+test('End to End Event Booking', async({browser})=>{
     const context = await browser.newContext();
     const page = await context.newPage();
     await login(page);
@@ -42,30 +42,24 @@ test('Login to application', async({browser})=>{
     await page.getByLabel('Total Seats').fill("50");
     await page.locator('#add-event-btn').click();
     await expect(page.getByText('Event created!')).toBeVisible();
-    
     await page.locator('#nav-events').click();
-    
     await expect(page.locator('[data-testid="event-card"]').first()).toBeVisible();
     const eventCards = page.locator('[data-testid="event-card"]');
     const match = eventCards.filter({hasText: event});
     await expect(match).toBeVisible();
     //need to start from last step before step 4
-    const seatsText = await page.locator("[data-testid='event-card'] span").last().textContent();
-    /*const seatsElement = await eventCard.getByText(/seats/i);
-    const seats = await seatsElement.textContent();
-*/
+    const seatsText = await match.locator("[class='text-xs font-semibold text-emerald-600']").textContent();
     const seatsBeforeBooking =parseInt(seatsText.match(/\d+/)[0]);
 
     // Step 4
     const bookBtn = match.locator('[data-testid="book-now-btn"]');
     await bookBtn.click();
     //Step 5
-    const ticketCount = await page.locator('#ticket-count:has-text("1")').isVisible();
+    await expect(page.locator('#ticket-count:has-text("1")')).toBeVisible();
     await page.getByLabel('Full Name').fill('Test User');
     await page.locator('#customer-email').fill('testUser@test.com');
     await page.getByPlaceholder('+91 98765 43210').fill('9192931918');
     await page.locator('.confirm-booking-btn').click();
-    
     const bookRef = await page.locator('.booking-ref').innerText();
     await page.getByRole('button', {name: 'View My Bookings'}).click();
     await page.waitForTimeout(1000);
@@ -74,19 +68,20 @@ test('Login to application', async({browser})=>{
     const bookingCards = page.locator('#booking-card');
     await expect((bookingCards).first()).toBeVisible();
     const myBooking = bookingCards.filter({hasText: bookRef});
-    const myBookingText = await myBooking.textContent();
     await expect(myBooking).toBeVisible();
     await expect(myBooking).toContainText(event);
 
-    
-
-    
-
-
-
-    
-
-
-
+    //Step 8
+    await page.locator('#nav-events').click();
+    await page.waitForTimeout(1000);
+    await expect(eventCards.first()).toBeVisible();
+    const myCard = eventCards.filter({hasText: event});
+    await expect(myCard).toBeVisible();
+    const seatsText1 = await myCard.locator("[class='text-xs font-semibold text-emerald-600']").textContent();
+    console.log(seatsText1)
+    const seatsAfterBooking = parseInt(seatsText1.match(/\d+/)[0]);
+    console.log("Before = ", seatsBeforeBooking);
+    console.log("After = ", seatsAfterBooking);
+    expect(seatsAfterBooking).toBe(seatsBeforeBooking-1);
 
 })
