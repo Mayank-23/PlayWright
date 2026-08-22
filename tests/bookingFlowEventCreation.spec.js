@@ -12,6 +12,7 @@ async function login(page, email = "assignment@user.com", password = "Learning@8
     await page.getByPlaceholder("you@email.com").fill(email);
     await page.getByLabel("Password").fill(password);
     await page.locator("#login-btn").click();
+    await expect(page.getByText("Browse Events →")).toBeVisible(); //making sure the logged in successfully
 }
 
  function futureDatevalue() {
@@ -25,7 +26,6 @@ async function login(page, email = "assignment@user.com", password = "Learning@8
 test('End to End Event Booking', async({page})=>{
     //not used the browser context, directly went with page context
     await login(page);
-    await expect(page.getByText("Browse Events →")).toBeVisible();
     
     //Step 2
     await page.getByRole('button',{name:'Admin'}).click();
@@ -78,5 +78,26 @@ test('End to End Event Booking', async({page})=>{
     console.log(seatsText1)
     const seatsAfterBooking = parseInt(seatsText1.match(/\d+/)[0],10);
     expect(seatsAfterBooking).toBe(seatsBeforeBooking-1);
+
+})
+
+test.only('Single Ticket Refund Eligibility test', async({page})=>{
+
+    //Step 1
+    await login(page);
+    
+    //Step 2
+    await page.goto(`${BASE_URL}events`);
+    const eventCard = await page.locator('#event-card').first();
+    await eventCard.locator("[data-testid='book-now-btn']").click();
+    await expect(page.locator('#ticket-count:has-text("1")')).toBeVisible();
+    await page.getByLabel('Full Name').fill('Test User');
+    await page.locator('#customer-email').fill('testUser@test.com');
+    await page.getByPlaceholder('+91 98765 43210').fill('9192931918');
+    await page.locator('.confirm-booking-btn').click();
+   // await page.pause();
+
+    //Step 3
+
 
 })
