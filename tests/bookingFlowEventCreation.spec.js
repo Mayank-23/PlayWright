@@ -14,7 +14,7 @@ async function login(page, email = "assignment@user.com", password = "Learning@8
     await page.locator("#login-btn").click();
 }
 
-async function futureDatevalue() {
+ function futureDatevalue() {
     const future = new Date();
     future.setDate(future.getDate()+7);
     return future.toISOString().slice(0, 16);
@@ -22,9 +22,8 @@ async function futureDatevalue() {
 }
 
 //Step 1
-test('End to End Event Booking', async({browser})=>{
-    const context = await browser.newContext();
-    const page = await context.newPage();
+test('End to End Event Booking', async({page})=>{
+    //not used the browser context, directly went with page context
     await login(page);
     await expect(page.getByText("Browse Events →")).toBeVisible();
     
@@ -49,7 +48,7 @@ test('End to End Event Booking', async({browser})=>{
     await expect(match).toBeVisible();
     //need to start from last step before step 4
     const seatsText = await match.locator("[class='text-xs font-semibold text-emerald-600']").textContent();
-    const seatsBeforeBooking =parseInt(seatsText.match(/\d+/)[0]);
+    const seatsBeforeBooking =parseInt(seatsText.match(/\d+/)[0],10);
 
     // Step 4
     const bookBtn = match.locator('[data-testid="book-now-btn"]');
@@ -62,9 +61,7 @@ test('End to End Event Booking', async({browser})=>{
     await page.locator('.confirm-booking-btn').click();
     const bookRef = await page.locator('.booking-ref').innerText();
     await page.getByRole('button', {name: 'View My Bookings'}).click();
-    await page.waitForTimeout(1000);
-    const bookingPage = page.url();
-    expect(bookingPage).toBe(`${BASE_URL}bookings`);
+    expect(page).toHaveURL(`${BASE_URL}bookings`);
     const bookingCards = page.locator('#booking-card');
     await expect((bookingCards).first()).toBeVisible();
     const myBooking = bookingCards.filter({hasText: bookRef});
@@ -79,7 +76,7 @@ test('End to End Event Booking', async({browser})=>{
     await expect(myCard).toBeVisible();
     const seatsText1 = await myCard.locator("[class='text-xs font-semibold text-emerald-600']").textContent();
     console.log(seatsText1)
-    const seatsAfterBooking = parseInt(seatsText1.match(/\d+/)[0]);
+    const seatsAfterBooking = parseInt(seatsText1.match(/\d+/)[0],10);
     console.log("Before = ", seatsBeforeBooking);
     console.log("After = ", seatsAfterBooking);
     expect(seatsAfterBooking).toBe(seatsBeforeBooking-1);
