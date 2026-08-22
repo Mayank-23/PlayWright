@@ -77,8 +77,6 @@ test('End to End Event Booking', async({page})=>{
     const seatsText1 = await myCard.locator("[class='text-xs font-semibold text-emerald-600']").textContent();
     console.log(seatsText1)
     const seatsAfterBooking = parseInt(seatsText1.match(/\d+/)[0],10);
-    console.log("Before = ", seatsBeforeBooking);
-    console.log("After = ", seatsAfterBooking);
     expect(seatsAfterBooking).toBe(seatsBeforeBooking-1);
 
 })
