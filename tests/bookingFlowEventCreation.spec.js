@@ -75,7 +75,7 @@ test('End to End Event Booking', async({page})=>{
     const myCard = eventCards.filter({hasText: event});
     await expect(myCard).toBeVisible();
     const seatsText1 = await myCard.locator("[class='text-xs font-semibold text-emerald-600']").textContent();
-    console.log(seatsText1)
+    //console.log(seatsText1)
     const seatsAfterBooking = parseInt(seatsText1.match(/\d+/)[0],10);
     expect(seatsAfterBooking).toBe(seatsBeforeBooking-1);
 
@@ -100,8 +100,23 @@ test.only('Single Ticket Refund Eligibility test', async({page})=>{
     //Step 3
     await page.getByRole('button', {name: 'View My Bookings'}).click();
     await expect(page).toHaveURL(`${BASE_URL}bookings`);
-    await page.getByRole('button',{name: "View Details"}).first.click();
-    await expect(page.getByText("Booking Information")).toBeVisible();    
+    await page.getByRole('button',{name: "View Details"}).first().click();
+    await expect(page.getByText("Booking Information")).toBeVisible();
+
+    //Step 4
+    const bookingRef = await page.locator("[class='font-mono font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg text-sm']").textContent();
+    const eventTitle = await page.locator("[class='text-2xl font-bold text-gray-900']").textContent();
+    //console.log(bookingRef);
+    //console.log(eventTitle);
+    expect(bookingRef.charAt(0)).toBe(eventTitle.charAt(0));
+
+    //Step 5
+    await page.getByRole('button', {name: 'Check eligibility for refund?'}).click();
+    await expect(page.locator('#refund-spinner')).toBeVisible();
+    await page.waitForTimeout(6000);
+    await expect(page.locator('#refund-spinner')).toBeHidden();
+
+
 
 
 })
