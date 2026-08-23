@@ -80,7 +80,7 @@ test('End to End Event Booking', async({page})=>{
 
 })
 
-test.only('Single Ticket Refund Eligibility test', async({page})=>{
+test('Single Ticket Refund Eligibility test', async({page})=>{
 
     //Step 1
     await login(page);
@@ -109,8 +109,7 @@ test.only('Single Ticket Refund Eligibility test', async({page})=>{
     //Step 5
     await page.getByRole('button', {name: 'Check eligibility for refund?'}).click();
     await expect(page.locator('#refund-spinner')).toBeVisible();
-    await page.waitForTimeout(6000);
-    await expect(page.locator('#refund-spinner')).toBeHidden();
+    await expect(page.locator('#refund-spinner')).toBeHidden({timeout: 6000}); //Checking the spinner is hidden with in 6 seconds
 
     //Step 6
     const refundText = page.locator('#refund-result');
