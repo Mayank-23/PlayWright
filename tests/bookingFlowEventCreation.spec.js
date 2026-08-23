@@ -75,7 +75,6 @@ test('End to End Event Booking', async({page})=>{
     const myCard = eventCards.filter({hasText: event});
     await expect(myCard).toBeVisible();
     const seatsText1 = await myCard.locator("[class='text-xs font-semibold text-emerald-600']").textContent();
-    //console.log(seatsText1)
     const seatsAfterBooking = parseInt(seatsText1.match(/\d+/)[0],10);
     expect(seatsAfterBooking).toBe(seatsBeforeBooking-1);
 
@@ -95,7 +94,6 @@ test.only('Single Ticket Refund Eligibility test', async({page})=>{
     await page.locator('#customer-email').fill('testUser1@test.com');
     await page.getByPlaceholder('+91 98765 43210').fill('9192331918');
     await page.locator('.confirm-booking-btn').click();
-   // await page.pause();
 
     //Step 3
     await page.getByRole('button', {name: 'View My Bookings'}).click();
@@ -106,8 +104,6 @@ test.only('Single Ticket Refund Eligibility test', async({page})=>{
     //Step 4
     const bookingRef = await page.locator("[class='font-mono font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg text-sm']").textContent();
     const eventTitle = await page.locator("[class='text-2xl font-bold text-gray-900']").textContent();
-    //console.log(bookingRef);
-    //console.log(eventTitle);
     expect(bookingRef.charAt(0)).toBe(eventTitle.charAt(0));
 
     //Step 5
