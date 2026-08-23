@@ -116,6 +116,11 @@ test.only('Single Ticket Refund Eligibility test', async({page})=>{
     await page.waitForTimeout(6000);
     await expect(page.locator('#refund-spinner')).toBeHidden();
 
+    //Step 6
+    const refundText = page.locator('#refund-result');
+    await expect(refundText).toBeVisible();
+    await expect(refundText).toContainText("Single-ticket bookings qualify for a full refund.");
+
 
 
 
