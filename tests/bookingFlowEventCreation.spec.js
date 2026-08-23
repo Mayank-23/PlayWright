@@ -91,13 +91,17 @@ test.only('Single Ticket Refund Eligibility test', async({page})=>{
     const eventCard = await page.locator('#event-card').first();
     await eventCard.locator("[data-testid='book-now-btn']").click();
     await expect(page.locator('#ticket-count:has-text("1")')).toBeVisible();
-    await page.getByLabel('Full Name').fill('Test User');
-    await page.locator('#customer-email').fill('testUser@test.com');
-    await page.getByPlaceholder('+91 98765 43210').fill('9192931918');
+    await page.getByLabel('Full Name').fill('Test User 1');
+    await page.locator('#customer-email').fill('testUser1@test.com');
+    await page.getByPlaceholder('+91 98765 43210').fill('9192331918');
     await page.locator('.confirm-booking-btn').click();
    // await page.pause();
 
     //Step 3
+    await page.getByRole('button', {name: 'View My Bookings'}).click();
+    await expect(page).toHaveURL(`${BASE_URL}bookings`);
+    await page.getByRole('button',{name: "View Details"}).first.click();
+    await expect(page.getByText("Booking Information")).toBeVisible();    
 
 
 })
