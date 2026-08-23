@@ -1,4 +1,5 @@
 const {test, expect} = require('@playwright/test');
+const { log } = require('node:console');
 const BASE_URL = "https://eventhub.rahulshettyacademy.com/";
 
 //Reusable navigation function below
@@ -116,7 +117,46 @@ test('Single Ticket Refund Eligibility test', async({page})=>{
     await expect(refundText).toBeVisible();
     await expect(refundText).toContainText("Single-ticket bookings qualify for a full refund.");
 
+})
 
+test('Group Booking Refund Eligibility Test', async({page})=>{
 
+    //Step 1
+    await login(page);
+
+    //Step 2
+    await page.goto(`${BASE_URL}events`);
+    const eventCard = await page.locator('#event-card').first();
+    await eventCard.locator("[data-testid='book-now-btn']").click();
+    await expect(page.locator('#ticket-count:has-text("1")')).toBeVisible();
+    await page.getByRole('button', {name: "+"}).dblclick();
+    const ticketCount = await page.locator("#ticket-count");
+    await expect(ticketCount).toHaveText('3');   
+    await page.getByLabel('Full Name').fill('Test User 1');
+    await page.locator('#customer-email').fill('testUser1@test.com');
+    await page.getByPlaceholder('+91 98765 43210').fill('9192331918');
+    await page.locator('.confirm-booking-btn').click();
+
+    //Step 3
+    await page.getByRole('button', {name: 'View My Bookings'}).click();
+    await expect(page).toHaveURL(`${BASE_URL}bookings`);
+    await page.getByRole('button',{name: "View Details"}).first().click();
+    await expect(page.getByText("Booking Information")).toBeVisible();
+
+    //Step 4
+    const bookingRef = await page.locator("[class='font-mono font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg text-sm']").textContent();
+    const eventTitle = await page.locator("[class='text-2xl font-bold text-gray-900']").textContent();
+    expect(bookingRef.charAt(0)).toBe(eventTitle.charAt(0));
+
+    //Step 5
+    await page.getByRole('button', {name: 'Check eligibility for refund?'}).click();
+    await expect(page.locator('#refund-spinner')).toBeVisible();
+    await expect(page.locator('#refund-spinner')).toBeHidden({timeout: 6000}); //Checking the spinner is hidden with in 6 seconds
+
+    //Step 6
+
+    const refundText = page.locator('#refund-result');
+    await expect(refundText).toContainText("Not eligible for refund.");
+    await expect(refundText).toContainText("Group bookings (3 tickets) are non-refundable.");
 
 })
