@@ -1,5 +1,4 @@
 const {test, expect} = require('@playwright/test');
-const { log } = require('node:console');
 const BASE_URL = "https://eventhub.rahulshettyacademy.com/";
 
 //Reusable navigation function below
@@ -37,7 +36,7 @@ test('End to End Event Booking', async({page})=>{
     //Start after Description
     await page.getByLabel('city').fill("Bangalore");
     await page.getByLabel('Venue').fill("MG Road");
-    await page.getByLabel('Event Date & Time').fill(await futureDatevalue());
+    await page.getByLabel('Event Date & Time').fill(futureDatevalue());
     await page.getByLabel('Price ($)').fill("1000");
     await page.getByLabel('Total Seats').fill("50");
     await page.locator('#add-event-btn').click();
@@ -88,7 +87,7 @@ test('Single Ticket Refund Eligibility test', async({page})=>{
     
     //Step 2
     await page.goto(`${BASE_URL}events`);
-    const eventCard = await page.locator('#event-card').first();
+    const eventCard = page.locator('#event-card').first();
     await eventCard.locator("[data-testid='book-now-btn']").click();
     await expect(page.locator('#ticket-count:has-text("1")')).toBeVisible();
     await page.getByLabel('Full Name').fill('Test User 1');
@@ -126,11 +125,11 @@ test('Group Booking Refund Eligibility Test', async({page})=>{
 
     //Step 2
     await page.goto(`${BASE_URL}events`);
-    const eventCard = await page.locator('#event-card').first();
+    const eventCard = page.locator('#event-card').first();
     await eventCard.locator("[data-testid='book-now-btn']").click();
     await expect(page.locator('#ticket-count:has-text("1")')).toBeVisible();
     await page.getByRole('button', {name: "+"}).dblclick();
-    const ticketCount = await page.locator("#ticket-count");
+    const ticketCount = page.locator("#ticket-count");
     await expect(ticketCount).toHaveText('3');   
     await page.getByLabel('Full Name').fill('Test User 1');
     await page.locator('#customer-email').fill('testUser1@test.com');
