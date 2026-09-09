@@ -1,5 +1,18 @@
 const {test, expect, request} = require('@playwright/test')
+const loginPayLoad = {userEmail: "assignment@user.com", userPassword: "Learning@830$3mK2"} // Login payload given as a global constant object here which can be used for any of the test
 
+test.beforeAll( async()=>{
+
+    const apiContext = await request.newContext();  //here apiContent will work as page which we are using for UI test like page.locator and other things
+    const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login", {
+        
+        data:loginPayLoad
+
+    })
+    expect((await loginResponse).ok()).toBeTruthy();
+
+
+});
 
 test('E2E Journey of eCommerce', async ({browser})=>{
     const email = "assignment@user.com";
