@@ -1,5 +1,6 @@
 const {test, expect, request} = require('@playwright/test')
 const loginPayLoad = {userEmail: "assignment@user.com", userPassword: "Learning@830$3mK2"} // Login payload given as a global constant object here which can be used for any of the test
+let token;
 
 test.beforeAll( async()=>{
 
@@ -10,9 +11,9 @@ test.beforeAll( async()=>{
 
     })
     expect((loginResponse).ok()).toBeTruthy();
-    const loginResponseJson = loginResponse.json(); //.json is a method which will fetch the response of the API after the call is made
-    const token = loginResponseJson.token; // here with .token we are fetching the token from the response body
-    console.log(token);
+    const loginResponseJson = await loginResponse.json(); //.json is a method which will fetch the response of the API after the call is made
+    token = loginResponseJson.token; // here with .token we are fetching the token from the response body
+    //console.log(token);
 
 
 });
@@ -21,6 +22,9 @@ test('E2E Journey of eCommerce', async ({browser})=>{
     const email = "assignment@user.com";
     const context = await browser.newContext();
     const page = await context.newPage();
+    await page.addInitScript(value => {
+        window.localStorage.setItem('token',value)
+    }, token);
     //const userEmail = page.locator('#userEmail');
     //const password = page.locator('#userPassword');
     //const signIn = page.locator("[type = 'submit']");
@@ -31,7 +35,7 @@ test('E2E Journey of eCommerce', async ({browser})=>{
     //await userEmail.fill(email);
     //await password.fill("Learning@830$3mK2");
     //await signIn.click();
-    await page.waitForLoadState('networkidle');
+    //await page.waitForLoadState('networkidle');
     await products.first().waitFor();
   
    const count = await products.count();
