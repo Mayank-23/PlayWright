@@ -9,7 +9,10 @@ test.beforeAll( async()=>{
         data:loginPayLoad
 
     })
-    expect((await loginResponse).ok()).toBeTruthy();
+    expect((loginResponse).ok()).toBeTruthy();
+    const loginResponseJson = loginResponse.json(); //.json is a method which will fetch the response of the API after the call is made
+    const token = loginResponseJson.token; // here with .token we are fetching the token from the response body
+    console.log(token);
 
 
 });
@@ -18,16 +21,16 @@ test('E2E Journey of eCommerce', async ({browser})=>{
     const email = "assignment@user.com";
     const context = await browser.newContext();
     const page = await context.newPage();
-    const userEmail = page.locator('#userEmail');
-    const password = page.locator('#userPassword');
-    const signIn = page.locator("[type = 'submit']");
+    //const userEmail = page.locator('#userEmail');
+    //const password = page.locator('#userPassword');
+    //const signIn = page.locator("[type = 'submit']");
     const cardTitles = page.locator(".card-body h5");
     const products = page.locator(".card-body");
     const productName = 'ZARA COAT 3';
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
-    await userEmail.fill(email);
-    await password.fill("Learning@830$3mK2");
-    await signIn.click();
+    //await userEmail.fill(email);
+    //await password.fill("Learning@830$3mK2");
+    //await signIn.click();
     await page.waitForLoadState('networkidle');
     await products.first().waitFor();
   
