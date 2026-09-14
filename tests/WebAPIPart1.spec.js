@@ -39,7 +39,6 @@ test('E2E Journey of eCommerce', async ({browser})=>{
     }, token);
     const productName = 'ZARA COAT 3';
     await page.goto("https://rahulshettyacademy.com/client/");
-    await products.first().waitFor();
    //console.log(orderID);
    await page.locator("ul [routerlink*='myorders']").click();
    const items = await page.locator(".py-5 [scope = 'row']");
