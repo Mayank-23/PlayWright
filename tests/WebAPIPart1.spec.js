@@ -54,8 +54,5 @@ test('E2E Journey of eCommerce', async ({browser})=>{
    }
    const orderIDdetails = await page.locator(".col-text").textContent();
    await expect(orderID.includes(orderIDdetails)).toBeTruthy();
-
-
-
-
+   
 })
