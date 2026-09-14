@@ -1,9 +1,10 @@
 const {test, expect, request} = require('@playwright/test')
 const loginPayLoad = {userEmail: "assignment@user.com", userPassword: "Learning@830$3mK2"} // Login payload given as a global constant object here which can be used for any of the test
 let token;
+const orderPayload = {"orders":[{"country":"India","productOrderedId":"6960eac0c941646b7a8b3e68"}]} // Create order payload which has the item which needs to be placed in order
 
 test.beforeAll( async()=>{
-
+    //Login API
     const apiContext = await request.newContext();  //here apiContent will work as page which we are using for UI test like page.locator and other things
     const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login", {
         
@@ -15,6 +16,14 @@ test.beforeAll( async()=>{
     token = loginResponseJson.token; // here with .token we are fetching the token from the response body
     //console.log(token);
 
+    const createOrder = apiContext.post("https://rahulshettyacademy.com/api/ecom/order/create-order", {
+        
+        data:orderPayload,
+        headers: {
+            'Authorization' : token, // Token is given so that order is placed for the particular user because the token holds the details of the logged in user
+            'Content-Type' : 'application/json' //
+        },
+    })
 
 });
 
@@ -22,8 +31,8 @@ test('E2E Journey of eCommerce', async ({browser})=>{
     const email = "assignment@user.com";
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.addInitScript(value => {
-        window.localStorage.setItem('token',value)
+    await page.addInitScript(value => {   
+        window.localStorage.setItem('token',value)  //used for injecting token into browser local storage
     }, token);
     //const userEmail = page.locator('#userEmail');
     //const password = page.locator('#userPassword');
@@ -81,7 +90,7 @@ test('E2E Journey of eCommerce', async ({browser})=>{
    await expect(confirm).toBeVisible();
    let orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
    orderID = orderID.replaceAll('|','').trim();
-   console.log(orderID);
+   //console.log(orderID);
    await page.locator("ul [routerlink*='myorders']").click();
    const items = await page.locator(".py-5 [scope = 'row']");
    const buttons = await page.locator(".py-5 td .btn-primary");
