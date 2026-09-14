@@ -17,6 +17,7 @@ test.beforeAll( async()=>{
     token = loginResponseJson.token; // here with .token we are fetching the token from the response body
     //console.log(token);
 
+    //Creating Order via API
     const orderResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/order/create-order", {
         
         data:orderPayload,
@@ -54,5 +55,5 @@ test('E2E Journey of eCommerce', async ({browser})=>{
    }
    const orderIDdetails = await page.locator(".col-text").textContent();
    await expect(orderID.includes(orderIDdetails)).toBeTruthy();
-   
+
 })
