@@ -38,7 +38,7 @@ test('E2E Journey of eCommerce', async ({browser})=>{
         window.localStorage.setItem('token',value)  //used for injecting token into browser local storage
     }, token);
     const productName = 'ZARA COAT 3';
-    await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
+    await page.goto("https://rahulshettyacademy.com/client/");
     await products.first().waitFor();
    //console.log(orderID);
    await page.locator("ul [routerlink*='myorders']").click();
