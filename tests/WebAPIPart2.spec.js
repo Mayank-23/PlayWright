@@ -1,6 +1,5 @@
 const {test, expect, request} = require('@playwright/test');
 const { apiUtils } = require('./utils/apiUtils');
-require('./utils/apiUtils');
 const loginPayLoad = {userEmail: "assignment@user.com", userPassword: "Learning@830$3mK2"} // Login payload given as a global constant object here which can be used for any of the test
 const orderPayload = {"orders":[{"country":"Cuba","productOrderedId":"6960eac0c941646b7a8b3e68"}]} // Create order payload which has the item which needs to be placed in order
 let response;
