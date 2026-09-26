@@ -1,6 +1,6 @@
 const {test, expect, request} = require('@playwright/test');
 const { apiUtils } = require('./utils/apiUtils');
-const loginPayLoad = {userEmail: "assignment@user.com", userPassword: "Learning@830$3mK2"}; // Login payload given as a global constant object here which can be used for any of the test
+const loginPayLoad = {userEmail: "assignment2@user.com", userPassword: "Learning@830$3mK2"}; // Login payload given as a global constant object here which can be used for any of the test
 const orderPayload = {orders:[{country:"Cuba",productOrderedId:"6960eac0c941646b7a8b3e68"}]}; // Create order payload which has the item which needs to be placed in order
 const fakePayloadOrders = {data:[],message:"No Orders"}; // This a javascript object but need to be sent as JSON object
 let response;
@@ -19,7 +19,7 @@ test('Place the order using API', async ({page})=>{
     }, response.token);
     await page.goto("https://rahulshettyacademy.com/client/");
    //console.log(orderID);
-   await page.route("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/6a10a57017ee3e78ba922563", 
+   await page.route("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*", //by putting * in last we have make it general for any user otherwise it will pick for the particular user for whcih ID is gvien
     async route=>{
         //intercepting response here - Life cycle of routing shown below
         //API response -> {playwright inject fake response} -> sent to browser for particular session
@@ -31,7 +31,7 @@ test('Place the order using API', async ({page})=>{
         });
     });
     await page.locator("ul [routerlink*='myorders']").click();
-    
+    await page.waitForResponse("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*")
    await expect(page.locator(".mt-4")).toContainText(" You have No Orders to show at this time.");
    
 })
