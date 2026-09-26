@@ -4,6 +4,7 @@ const loginPayLoad = {userEmail: "assignment2@user.com", userPassword: "Learning
 const orderPayload = {orders:[{country:"Cuba",productOrderedId:"6960eac0c941646b7a8b3e68"}]}; // Create order payload which has the item which needs to be placed in order
 const fakePayloadOrders = {data:[],message:"No Orders"}; // This a javascript object but need to be sent as JSON object
 let response;
+let response2
 
 test.beforeAll( async()=>{
   
@@ -23,15 +24,15 @@ test('Place the order using API', async ({page})=>{
     async route=>{
         //intercepting response here - Life cycle of routing shown below
         //API response -> {playwright inject fake response} -> sent to browser for particular session
-        const response = await page.request.fetch(route.request());
+        const response2 = await page.request.fetch(route.request());
         let body = JSON.stringify(fakePayloadOrders); //By giving JSON.stringify we are converting the Javascript object to JSON format
         route.fulfill({
-            response,
+            response2,
             body
         });
     });
     await page.locator("ul [routerlink*='myorders']").click();
-    await page.waitForResponse("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*")
+    await page.waitForResponse("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*") 
    await expect(page.locator(".mt-4")).toContainText(" You have No Orders to show at this time.");
    
 })
