@@ -31,7 +31,7 @@ test('Place the order using API', async ({page})=>{
         });
     });
     await page.locator("ul [routerlink*='myorders']").click();
-    await page.pause();
+    
    await expect(page.locator(".mt-4")).toContainText(" You have No Orders to show at this time.");
    
 })
